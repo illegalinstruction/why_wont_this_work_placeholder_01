@@ -1,0 +1,334 @@
+[gd_scene load_steps=33 format=2]
+
+[ext_resource path="res://TwilightCube.gd" type="Script" id=1]
+[ext_resource path="res://textures/backdrop.jpeg" type="Texture" id=2]
+[ext_resource path="res://textures/shader01.jpeg" type="Texture" id=3]
+[ext_resource path="res://textures/shader02.jpeg" type="Texture" id=4]
+
+[sub_resource type="PlaneMesh" id=3]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=14]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 1, 0.5 ) ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture" id=4]
+texture = ExtResource( 3 )
+
+[sub_resource type="VisualShaderNodeInput" id=5]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeInput" id=6]
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeTexture" id=7]
+source = 1
+
+[sub_resource type="VisualShaderNodeVectorOp" id=8]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0.5 ) ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeVectorOp" id=9]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0.5 ) ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id=10]
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=11]
+
+[sub_resource type="VisualShader" id=12]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, async_visible;
+
+uniform sampler2D tex_frg_2;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Vector:9
+	vec3 n_out9p0 = vec3(0.000000, 0.000000, 0.000000);
+
+// Input:3
+	vec3 n_out3p0 = vec3(UV, 0.0);
+
+// Texture:2
+	vec4 tex_frg_2_read = texture(tex_frg_2, n_out3p0.xy);
+	vec3 n_out2p0 = tex_frg_2_read.rgb;
+	float n_out2p1 = tex_frg_2_read.a;
+
+// VectorOp:6
+	vec3 n_in6p1 = vec3(0.50000, 0.50000, 0.50000);
+	vec3 n_out6p0 = n_out2p0 - n_in6p1;
+
+// VectorOp:7
+	vec3 n_in7p1 = vec3(0.50000, 0.50000, 0.50000);
+	vec3 n_out7p0 = n_out6p0 * n_in7p1;
+
+// Input:4
+	vec3 n_out4p0 = vec3(SCREEN_UV, 0.0);
+
+// VectorOp:8
+	vec3 n_out8p0 = n_out7p0 + n_out4p0;
+
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = textureLod(SCREEN_TEXTURE, n_out8p0.xy, 0.0);
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// VectorOp:10
+	vec3 n_in10p1 = vec3(0.50000, 1.00000, 0.50000);
+	vec3 n_out10p0 = n_out5p0 * n_in10p1;
+
+// Output:0
+	ALBEDO = n_out9p0;
+	EMISSION = n_out10p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -678.662, 463.424 )
+nodes/fragment/2/node = SubResource( 4 )
+nodes/fragment/2/position = Vector2( -520, 160 )
+nodes/fragment/3/node = SubResource( 5 )
+nodes/fragment/3/position = Vector2( -720, 280 )
+nodes/fragment/4/node = SubResource( 6 )
+nodes/fragment/4/position = Vector2( -680, 500 )
+nodes/fragment/5/node = SubResource( 7 )
+nodes/fragment/5/position = Vector2( 80, 520 )
+nodes/fragment/6/node = SubResource( 8 )
+nodes/fragment/6/position = Vector2( -340, 260 )
+nodes/fragment/7/node = SubResource( 9 )
+nodes/fragment/7/position = Vector2( -140, 260 )
+nodes/fragment/8/node = SubResource( 10 )
+nodes/fragment/8/position = Vector2( 61, 309 )
+nodes/fragment/9/node = SubResource( 11 )
+nodes/fragment/9/position = Vector2( -20, 100 )
+nodes/fragment/10/node = SubResource( 14 )
+nodes/fragment/10/position = Vector2( 295.77, 618.081 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 2, 0, 2, 0, 6, 0, 6, 0, 7, 0, 7, 0, 8, 0, 4, 0, 8, 1, 8, 0, 5, 0, 9, 0, 0, 0, 5, 0, 10, 0, 10, 0, 0, 5 )
+
+[sub_resource type="ShaderMaterial" id=13]
+shader = SubResource( 12 )
+
+[sub_resource type="PlaneMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="PlaneMesh" id=15]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=16]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 1, 0.8, 0.6 ) ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture" id=17]
+texture = ExtResource( 4 )
+
+[sub_resource type="VisualShaderNodeInput" id=18]
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeInput" id=19]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=20]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0.5 ) ]
+operator = 1
+
+[sub_resource type="VisualShaderNodeTexture" id=21]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=22]
+
+[sub_resource type="VisualShaderNodeVectorOp" id=23]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0.5, 0.5, 0.5 ) ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=24]
+
+[sub_resource type="VisualShader" id=25]
+resource_local_to_scene = true
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, async_visible;
+
+uniform sampler2D tex_frg_2;
+uniform sampler2D tex_frg_6;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Vector:9
+	vec3 n_out9p0 = vec3(0.000000, 0.000000, 0.000000);
+
+// Input:3
+	vec3 n_out3p0 = vec3(SCREEN_UV, 0.0);
+
+// Input:4
+	vec3 n_out4p0 = vec3(UV, 0.0);
+
+// Texture:2
+	vec4 tex_frg_2_read = texture(tex_frg_2, n_out4p0.xy);
+	vec3 n_out2p0 = tex_frg_2_read.rgb;
+	float n_out2p1 = tex_frg_2_read.a;
+
+// VectorOp:5
+	vec3 n_in5p1 = vec3(0.50000, 0.50000, 0.50000);
+	vec3 n_out5p0 = n_out2p0 - n_in5p1;
+
+// VectorOp:8
+	vec3 n_in8p1 = vec3(0.50000, 0.50000, 0.50000);
+	vec3 n_out8p0 = n_out5p0 * n_in8p1;
+
+// VectorOp:7
+	vec3 n_out7p0 = n_out3p0 + n_out8p0;
+
+// Texture:6
+	vec4 tex_frg_6_read = texture(tex_frg_6, n_out7p0.xy);
+	vec3 n_out6p0 = tex_frg_6_read.rgb;
+	float n_out6p1 = tex_frg_6_read.a;
+
+// VectorOp:10
+	vec3 n_in10p1 = vec3(1.00000, 0.80000, 0.60000);
+	vec3 n_out10p0 = n_out6p0 * n_in10p1;
+
+// Output:0
+	ALBEDO = n_out9p0;
+	EMISSION = n_out10p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -565.854, 322.232 )
+nodes/fragment/0/position = Vector2( 500, 100 )
+nodes/fragment/2/node = SubResource( 17 )
+nodes/fragment/2/position = Vector2( -760, 160 )
+nodes/fragment/3/node = SubResource( 18 )
+nodes/fragment/3/position = Vector2( -860, 540 )
+nodes/fragment/4/node = SubResource( 19 )
+nodes/fragment/4/position = Vector2( -1000, 280 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( -520, 260 )
+nodes/fragment/6/node = SubResource( 21 )
+nodes/fragment/6/position = Vector2( 40, 420 )
+nodes/fragment/7/node = SubResource( 22 )
+nodes/fragment/7/position = Vector2( -160, 460 )
+nodes/fragment/8/node = SubResource( 23 )
+nodes/fragment/8/position = Vector2( -300, 260 )
+nodes/fragment/9/node = SubResource( 24 )
+nodes/fragment/9/position = Vector2( -160, 120 )
+nodes/fragment/10/node = SubResource( 16 )
+nodes/fragment/10/position = Vector2( 240, 420 )
+nodes/fragment/connections = PoolIntArray( 4, 0, 2, 0, 2, 0, 5, 0, 3, 0, 7, 0, 5, 0, 8, 0, 8, 0, 7, 1, 7, 0, 6, 0, 9, 0, 0, 0, 6, 0, 10, 0, 10, 0, 0, 5 )
+
+[sub_resource type="ViewportTexture" id=29]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="ShaderMaterial" id=26]
+resource_local_to_scene = true
+shader = SubResource( 25 )
+shader_param/tex_frg_6 = SubResource( 29 )
+
+[sub_resource type="GDScript" id=28]
+script/source = "extends MeshInstance
+
+var anim_clock: int;
+
+#==============================================================
+
+func _ready():
+    anim_clock = 0;
+    return; 
+
+#==============================================================
+
+func _process(_delta):
+    translation.x = sin(anim_clock/87.0)*1.5;
+    rotate_z(0.0025);
+    anim_clock+=1;
+    return;
+"
+
+[node name="app_root" type="Spatial"]
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 1024, 600 )
+
+[node name="Camera" type="Camera" parent="Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.56285 )
+
+[node name="lens_effect_01" type="MeshInstance" parent="Viewport"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 2.1805 )
+mesh = SubResource( 3 )
+skeleton = NodePath("")
+material/0 = SubResource( 13 )
+
+[node name="TwilightCube" type="Spatial" parent="Viewport"]
+transform = Transform( 0.999959, -0.00911049, 0, 0.00911049, 0.999959, 0, 0, 0, 1, 0, 0, 0 )
+script = ExtResource( 1 )
+
+[node name="background_0" type="MeshInstance" parent="Viewport/TwilightCube"]
+transform = Transform( -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, -1, 0 )
+mesh = SubResource( 1 )
+skeleton = NodePath("")
+material/0 = SubResource( 2 )
+
+[node name="background_1" type="MeshInstance" parent="Viewport/TwilightCube"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 1 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../background_0")
+material/0 = SubResource( 2 )
+
+[node name="background_2" type="MeshInstance" parent="Viewport/TwilightCube"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+mesh = SubResource( 1 )
+skeleton = NodePath("")
+material/0 = SubResource( 2 )
+
+[node name="background_3" type="MeshInstance" parent="Viewport/TwilightCube"]
+transform = Transform( -4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1, 0, 0 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../background_0")
+material/0 = SubResource( 2 )
+
+[node name="background_4" type="MeshInstance" parent="Viewport/TwilightCube"]
+transform = Transform( -1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 0, 0, -1 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../background_0")
+material/0 = SubResource( 2 )
+
+[node name="background_5" type="MeshInstance" parent="Viewport/TwilightCube"]
+transform = Transform( 1.19249e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, 1.19249e-08, -5.21253e-16, -1, 0, 0 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../background_0")
+material/0 = SubResource( 2 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Viewport"]
+transform = Transform( 0.860235, -0.319365, 0.397494, 0, 0.779557, 0.626332, -0.509897, -0.538793, 0.670602, 0, 0.731525, 0 )
+
+[node name="lens_effect_02" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.00652744, -0.999979, 0, 0.999979, 0.00652744, 0, 0, 2.71613 )
+mesh = SubResource( 15 )
+material/0 = SubResource( 26 )
+script = SubResource( 28 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.58545 )
