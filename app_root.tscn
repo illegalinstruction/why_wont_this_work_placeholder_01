@@ -1,9 +1,18 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://TwilightCube.gd" type="Script" id=1]
 [ext_resource path="res://textures/backdrop.jpeg" type="Texture" id=2]
 [ext_resource path="res://textures/shader01.jpeg" type="Texture" id=3]
 [ext_resource path="res://textures/shader02.jpeg" type="Texture" id=4]
+
+[sub_resource type="ProceduralSky" id=30]
+
+[sub_resource type="Environment" id=31]
+background_mode = 2
+background_sky = SubResource( 30 )
+
+[sub_resource type="World" id=32]
+environment = SubResource( 31 )
 
 [sub_resource type="PlaneMesh" id=3]
 
@@ -271,6 +280,8 @@ func _process(_delta):
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 1024, 600 )
+own_world = true
+world = SubResource( 32 )
 
 [node name="Camera" type="Camera" parent="Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.56285 )
